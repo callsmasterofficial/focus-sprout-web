@@ -1,0 +1,395 @@
+import {
+  UserSettings,
+  DistractionRule,
+  Achievement,
+  SproutStage,
+  AmbientSound,
+  Task,
+  Session,
+} from '@/types';
+
+export const Palette = {
+  // Sprout Greens
+  forestDark: '#132A13',
+  forestDeep: '#1B4332',
+  forestMid: '#2D6A4F',
+  forestSprout: '#40916C',
+  sproutFresh: '#52B788',
+  sproutLight: '#74C69D',
+  sproutMint: '#95D5B2',
+  sproutPale: '#D8F3DC',
+  sproutGlow: '#B7E4C7',
+
+  // Earth & Sun Accents
+  amberWarm: '#E76F51',
+  terracotta: '#DDA15E',
+  woodBrown: '#BC6C25',
+  sunYellow: '#E9C46A',
+  skyCalm: '#2A9D8F',
+  oceanBlue: '#264653',
+  lavenderFocus: '#8338EC',
+
+  // Neutrals - Light Mode
+  lightBg: '#F6F9F6',
+  lightSurface: '#FFFFFF',
+  lightSurfaceAlt: '#EFF4EF',
+  lightBorder: '#E1EBE2',
+  lightTextPrimary: '#14261C',
+  lightTextSecondary: '#4A6253',
+  lightTextMuted: '#7E9786',
+
+  // Neutrals - Dark Mode
+  darkBg: '#0F1813',
+  darkSurface: '#17241D',
+  darkSurfaceAlt: '#1F3027',
+  darkBorder: '#283D32',
+  darkTextPrimary: '#F0F7F2',
+  darkTextSecondary: '#A9C4B3',
+  darkTextMuted: '#688574',
+};
+
+export const SPROUT_STAGES: SproutStage[] = [
+  { level: 1, name: 'Dormant Seed', title: 'Beginner Gardener', requiredSessions: 0, description: 'Plant your focus roots. Complete your first session to sprout!', badge: '🌰' },
+  { level: 2, name: 'Tiny Sprout', title: 'Curious Sprout', requiredSessions: 4, description: 'Two fresh green leaves emerging from fertile ground.', badge: '🌱' },
+  { level: 3, name: 'Lush Foliage', title: 'Focused Cultivator', requiredSessions: 12, description: 'Your branches are growing strong and resisting distractions.', badge: '🌿' },
+  { level: 4, name: 'Young Sapling', title: 'Deep Worker', requiredSessions: 25, description: 'A sturdy sapling standing tall with unwavering attention.', badge: '🪴' },
+  { level: 5, name: 'Thriving Tree', title: 'Forest Guardian', requiredSessions: 50, description: 'A magnificent canopy providing shade and productivity.', badge: '🌳' },
+  { level: 6, name: 'Blooming Evergreen', title: 'Sprout Grandmaster', requiredSessions: 100, description: 'Rare blossoms radiating mindful serenity and peak flow.', badge: '🌸' },
+];
+
+export const DEFAULT_SETTINGS: UserSettings = {
+  focusDurationMin: 25,
+  shortBreakMin: 5,
+  longBreakMin: 15,
+  sessionsBeforeLongBreak: 4,
+  autoStartBreaks: false,
+  autoStartFocus: false,
+  tickingSound: false,
+  tickingVolume: 0.3,
+  completionSound: 'chime',
+  soundEnabled: true,
+  vibrationEnabled: true,
+  dailyGoalMinutes: 120, // 2 hours
+  weeklyGoalMinutes: 600, // 10 hours
+  theme: 'system',
+  distractionShieldEnabled: true,
+  emergencyExitDelaySec: 5,
+  notificationsEnabled: true,
+  dailyReminderTime: '09:00',
+  guestMode: true,
+  userName: 'Sprout Gardener',
+  sproutName: 'Bonsai',
+  hasCompletedOnboarding: false,
+};
+
+export const DEFAULT_DISTRACTION_RULES: DistractionRule[] = [
+  { id: '1', name: 'Instagram & TikTok', category: 'social', icon: 'Instagram', enabled: true, website: 'instagram.com' },
+  { id: '2', name: 'YouTube & Netflix', category: 'entertainment', icon: 'Youtube', enabled: true, website: 'youtube.com' },
+  { id: '3', name: 'X / Twitter & Reddit', category: 'social', icon: 'Twitter', enabled: true, website: 'twitter.com' },
+  { id: '4', name: 'Shopping & Browsing', category: 'shopping', icon: 'ShoppingBag', enabled: false, website: 'amazon.com' },
+  { id: '5', name: 'Games & Puzzles', category: 'gaming', icon: 'Gamepad2', enabled: true },
+];
+
+export const INITIAL_ACHIEVEMENTS: Achievement[] = [
+  { id: 'first_step', title: 'First Seed', description: 'Complete your first focus session', icon: 'Sprout', tier: 'bronze', progress: 0, maxProgress: 1, unlocked: false },
+  { id: 'sprout_grower', title: 'Little Sprout', description: 'Complete 5 focus sessions', icon: 'Flower2', tier: 'bronze', progress: 0, maxProgress: 5, unlocked: false },
+  { id: 'deep_diver', title: 'Deep Worker', description: 'Focus for a continuous 50-minute session', icon: 'Droplets', tier: 'silver', progress: 0, maxProgress: 1, unlocked: false },
+  { id: 'daily_champion', title: 'Daily Bloom', description: 'Reach your daily focus goal', icon: 'Sun', tier: 'silver', progress: 0, maxProgress: 1, unlocked: false },
+  { id: 'streak_3', title: 'Sprout Habit', description: 'Maintain a 3-day focus streak', icon: 'Flame', tier: 'silver', progress: 0, maxProgress: 3, unlocked: false },
+  { id: 'streak_7', title: 'Week of Greenery', description: 'Maintain a 7-day focus streak', icon: 'Award', tier: 'gold', progress: 0, maxProgress: 7, unlocked: false },
+  { id: 'ten_hours', title: 'Forest Master', description: 'Accumulate 10 total hours of focus time', icon: 'Trophy', tier: 'gold', progress: 0, maxProgress: 600, unlocked: false },
+  { id: 'task_slayer', title: 'Harvest Master', description: 'Complete 10 tasks linked with focus', icon: 'CheckCircle2', tier: 'emerald', progress: 0, maxProgress: 10, unlocked: false },
+];
+
+export const DEFAULT_TRACKS: AmbientSound[] = [
+  {
+    id: 'rain',
+    name: 'Gentle Rain',
+    description: 'Soothing rainfall tapping softly against leaves',
+    icon: 'CloudRain',
+    volume: 0.6,
+    isPlaying: false,
+  },
+  {
+    id: 'forest',
+    name: 'Forest Canopy',
+    description: 'Deep woodland breeze rustling through green pines',
+    icon: 'Trees',
+    volume: 0.5,
+    isPlaying: false,
+  },
+  {
+    id: 'ocean',
+    name: 'Tidal Waves',
+    description: 'Rhythmic, meditative ocean surf rolling ashore',
+    icon: 'Waves',
+    volume: 0.5,
+    isPlaying: false,
+  },
+  {
+    id: 'whitenoise',
+    name: 'Deep White Noise',
+    description: 'Consistent broadband frequencies to mask office noise',
+    icon: 'Radio',
+    volume: 0.4,
+    isPlaying: false,
+  },
+  {
+    id: 'campfire',
+    name: 'Night Campfire',
+    description: 'Warm crackling embers under a quiet starry sky',
+    icon: 'Flame',
+    volume: 0.5,
+    isPlaying: false,
+  },
+  {
+    id: 'cafe',
+    name: 'Cozy Greenhouse Cafe',
+    description: 'Warm ambient murmur of a botanical coffee shop',
+    icon: 'Coffee',
+    volume: 0.4,
+    isPlaying: false,
+  },
+];
+
+export function generateDemoData(): { tasks: Task[]; sessions: Session[] } {
+  const today = typeof window !== 'undefined' ? new Date() : new Date('2026-11-06T12:00:00Z');
+  const generateDate = (daysAgo: number, hour: number, minute: number = 0) => {
+    const d = new Date(today);
+    d.setDate(d.getDate() - daysAgo);
+    d.setHours(hour, minute, 0, 0);
+    return d.toISOString();
+  };
+
+  const tasks: Task[] = [
+    {
+      id: 'task-1',
+      title: 'Design FocusSprout Architecture & Design System',
+      category: 'Work',
+      priority: 'high',
+      estimatedPomodoros: 4,
+      completedPomodoros: 4,
+      completed: true,
+      createdAt: generateDate(3, 9),
+      completedAt: generateDate(1, 17),
+    },
+    {
+      id: 'task-2',
+      title: 'Review System Design & Habit Psychology',
+      category: 'Study',
+      priority: 'medium',
+      estimatedPomodoros: 3,
+      completedPomodoros: 2,
+      completed: false,
+      dueDate: new Date(Date.now() + 86400000).toISOString(),
+      createdAt: generateDate(2, 10),
+    },
+    {
+      id: 'task-3',
+      title: 'Morning Deep Meditation & Journaling',
+      category: 'Health',
+      priority: 'low',
+      estimatedPomodoros: 1,
+      completedPomodoros: 1,
+      completed: true,
+      createdAt: generateDate(1, 7),
+      completedAt: generateDate(1, 7, 30),
+    },
+    {
+      id: 'task-4',
+      title: 'Write Technical Documentation & API Guides',
+      category: 'Work',
+      priority: 'high',
+      estimatedPomodoros: 5,
+      completedPomodoros: 3,
+      completed: false,
+      createdAt: generateDate(1, 14),
+    },
+    {
+      id: 'task-5',
+      title: 'Read 25 Pages of Deep Work by Cal Newport',
+      category: 'Personal',
+      priority: 'medium',
+      estimatedPomodoros: 2,
+      completedPomodoros: 1,
+      completed: false,
+      createdAt: generateDate(0, 8),
+    },
+  ];
+
+  const sessions: Session[] = [
+    // Today
+    {
+      id: 'sess-today-1',
+      mode: 'focus',
+      taskId: 'task-5',
+      taskTitle: 'Read 25 Pages of Deep Work by Cal Newport',
+      category: 'Personal',
+      plannedDurationSec: 1500,
+      actualDurationSec: 1500,
+      startedAt: generateDate(0, 9, 0),
+      completedAt: generateDate(0, 9, 25),
+      completed: true,
+      notes: 'Chapter 2 on attention residue was eye opening.',
+      distractionShieldActive: true,
+    },
+    {
+      id: 'sess-today-2',
+      mode: 'short_break',
+      plannedDurationSec: 300,
+      actualDurationSec: 300,
+      startedAt: generateDate(0, 9, 25),
+      completedAt: generateDate(0, 9, 30),
+      completed: true,
+      distractionShieldActive: false,
+    },
+    {
+      id: 'sess-today-3',
+      mode: 'focus',
+      taskId: 'task-4',
+      taskTitle: 'Write Technical Documentation & API Guides',
+      category: 'Work',
+      plannedDurationSec: 1500,
+      actualDurationSec: 1500,
+      startedAt: generateDate(0, 10, 0),
+      completedAt: generateDate(0, 10, 25),
+      completed: true,
+      notes: 'Documented offline synchronization and background recovery.',
+      distractionShieldActive: true,
+    },
+    {
+      id: 'sess-today-4',
+      mode: 'focus',
+      taskId: 'task-4',
+      taskTitle: 'Write Technical Documentation & API Guides',
+      category: 'Work',
+      plannedDurationSec: 1500,
+      actualDurationSec: 1500,
+      startedAt: generateDate(0, 10, 35),
+      completedAt: generateDate(0, 11, 0),
+      completed: true,
+      distractionShieldActive: true,
+    },
+
+    // Yesterday
+    {
+      id: 'sess-yest-1',
+      mode: 'focus',
+      taskId: 'task-1',
+      taskTitle: 'Design FocusSprout Architecture & Design System',
+      category: 'Work',
+      plannedDurationSec: 1500,
+      actualDurationSec: 1500,
+      startedAt: generateDate(1, 10, 0),
+      completedAt: generateDate(1, 10, 25),
+      completed: true,
+      distractionShieldActive: true,
+    },
+    {
+      id: 'sess-yest-2',
+      mode: 'focus',
+      taskId: 'task-1',
+      taskTitle: 'Design FocusSprout Architecture & Design System',
+      category: 'Work',
+      plannedDurationSec: 1500,
+      actualDurationSec: 1500,
+      startedAt: generateDate(1, 11, 0),
+      completedAt: generateDate(1, 11, 25),
+      completed: true,
+      distractionShieldActive: true,
+    },
+    {
+      id: 'sess-yest-3',
+      mode: 'focus',
+      taskId: 'task-2',
+      taskTitle: 'Review System Design & Habit Psychology',
+      category: 'Study',
+      plannedDurationSec: 1500,
+      actualDurationSec: 1500,
+      startedAt: generateDate(1, 14, 0),
+      completedAt: generateDate(1, 14, 25),
+      completed: true,
+      distractionShieldActive: true,
+    },
+    {
+      id: 'sess-yest-4',
+      mode: 'focus',
+      taskId: 'task-2',
+      taskTitle: 'Review System Design & Habit Psychology',
+      category: 'Study',
+      plannedDurationSec: 1500,
+      actualDurationSec: 1500,
+      startedAt: generateDate(1, 15, 0),
+      completedAt: generateDate(1, 15, 25),
+      completed: true,
+      distractionShieldActive: true,
+    },
+
+    // 2 Days Ago
+    {
+      id: 'sess-2d-1',
+      mode: 'focus',
+      taskId: 'task-1',
+      taskTitle: 'Design FocusSprout Architecture & Design System',
+      category: 'Work',
+      plannedDurationSec: 1500,
+      actualDurationSec: 1500,
+      startedAt: generateDate(2, 9, 30),
+      completedAt: generateDate(2, 9, 55),
+      completed: true,
+      distractionShieldActive: true,
+    },
+    {
+      id: 'sess-2d-2',
+      mode: 'focus',
+      taskId: 'task-1',
+      taskTitle: 'Design FocusSprout Architecture & Design System',
+      category: 'Work',
+      plannedDurationSec: 1500,
+      actualDurationSec: 1500,
+      startedAt: generateDate(2, 11, 0),
+      completedAt: generateDate(2, 11, 25),
+      completed: true,
+      distractionShieldActive: true,
+    },
+    {
+      id: 'sess-2d-3',
+      mode: 'focus',
+      taskId: 'task-3',
+      taskTitle: 'Morning Deep Meditation & Journaling',
+      category: 'Health',
+      plannedDurationSec: 1500,
+      actualDurationSec: 1500,
+      startedAt: generateDate(2, 16, 0),
+      completedAt: generateDate(2, 16, 25),
+      completed: true,
+      distractionShieldActive: true,
+    },
+
+    // 3 Days Ago
+    {
+      id: 'sess-3d-1',
+      mode: 'focus',
+      category: 'Study',
+      plannedDurationSec: 1500,
+      actualDurationSec: 1500,
+      startedAt: generateDate(3, 10, 0),
+      completedAt: generateDate(3, 10, 25),
+      completed: true,
+      distractionShieldActive: true,
+    },
+    {
+      id: 'sess-3d-2',
+      mode: 'focus',
+      category: 'Work',
+      plannedDurationSec: 1500,
+      actualDurationSec: 1500,
+      startedAt: generateDate(3, 11, 30),
+      completedAt: generateDate(3, 11, 55),
+      completed: true,
+      distractionShieldActive: true,
+    },
+  ];
+
+  return { tasks, sessions };
+}
